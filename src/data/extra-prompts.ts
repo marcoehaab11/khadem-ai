@@ -1,1 +1,2 @@
-export { SPARKTECH_EXACT_PROMPTS as EXTRA_PROMPTS } from './sparktech-exact-prompts';
+import type { Prompt } from './prompts';
+export const EXTRA_PROMPTS: Prompt[] = [];
