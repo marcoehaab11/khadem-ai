@@ -1,31 +1,4 @@
-import React,{useMemo,useState}from'react';
-import{createRoot}from'react-dom/client';
-import{Copy,Heart,Search,Sparkles,ChevronLeft,X}from'lucide-react';
-import{PROMPTS,Prompt}from'./data/prompts';
-import{EXTRA_PROMPTS}from'./data/extra-prompts';
-import'./styles.css';
-
+import React,{useMemo,useState}from'react';import{createRoot}from'react-dom/client';import{Copy,Heart,Search,Sparkles,ChevronLeft,X}from'lucide-react';import{PROMPTS,Prompt}from'./data/prompts';import{EXTRA_PROMPTS}from'./data/extra-prompts';import'./styles.css';
 const ALL_PROMPTS=[...PROMPTS,...EXTRA_PROMPTS];
 const cats=['الكل','خدمة جامعية','دراسة الكتاب المقدس','اجتماعات ومجموعات','تدريب الخدام','التواصل','إدارة الخدمة','خدمة الأطفال','محتوى وتعليم','محتوى رقمي'];
-
-function App(){
- const[q,setQ]=useState('');
- const[cat,setCat]=useState('خدمة جامعية');
- const[selected,setSelected]=useState<Prompt|null>(null);
- const[favs,setFavs]=useState<string[]>(()=>JSON.parse(localStorage.getItem('khadem-favs')||'[]'));
- const list=useMemo(()=>ALL_PROMPTS.filter(p=>(cat==='الكل'||p.category===cat)&&`${p.title} ${p.summary} ${p.category} ${p.audience} ${p.template}`.toLowerCase().includes(q.toLowerCase())),[q,cat]);
- const toggle=(id:string)=>{const n=favs.includes(id)?favs.filter(x=>x!==id):[...favs,id];setFavs(n);localStorage.setItem('khadem-favs',JSON.stringify(n))};
- return <div className="app">
-  <header><div className="logo-box">مكان اللوجو</div><div><div className="brand">خادم AI</div><div className="sub">أدوات ذكية تساعدك في الخدمة</div></div></header>
-  <main>
-   <section className="hero"><span className="pill"><Sparkles size={14}/> خدمة جامعية</span><h1>خلي الـAI يساعدك<br/><span>في خدمتك</span></h1><p>مكتبة جاهزة من البرومبتات للخدمة. اختار، عدّل، وانسخ. المحتوى محفوظ داخل الموقع ولا يحتاج بحثًا خارجيًا.</p><div className="search"><Search size={20}/><input value={q} onChange={e=>setQ(e.target.value)} placeholder="دور على برومبت..."/></div></section>
-   <nav>{cats.map(c=><button className={cat===c?'active':''} onClick={()=>setCat(c)} key={c}>{c}</button>)}</nav>
-   <div className="count">{list.length} برومبت متاح</div>
-   <section className="grid">{list.map(p=><article className="card" key={p.id}><div className="top"><span className="tag">{p.category}</span><button aria-label="مفضلة" className="icon" onClick={()=>toggle(p.id)}><Heart size={19} fill={favs.includes(p.id)?'currentColor':'none'}/></button></div><h2>{p.title}</h2><p>{p.summary}</p><div className="meta">{p.audience}</div><button className="open" onClick={()=>setSelected(p)}>استخدم البرومبت <ChevronLeft size={18}/></button></article>)}</section>
-   {list.length===0&&<div className="empty">مفيش برومبت مطابق لبحثك. جرّب كلمة مختلفة أو اختار تصنيف آخر.</div>}
-  </main>
-  {selected&&<div className="overlay" role="dialog" aria-modal="true" onClick={()=>setSelected(null)}><div className="modal" onClick={e=>e.stopPropagation()}><button className="close" aria-label="إغلاق" onClick={()=>setSelected(null)}><X size={22}/></button><span className="tag">{selected.category}</span><h2>{selected.title}</h2><p className="help">{selected.whenToUse}</p><pre>{selected.template}</pre><button className="primary" onClick={()=>navigator.clipboard.writeText(selected.template)}><Copy size={18}/> نسخ البرومبت</button><div className="example"><b>مثال:</b> {selected.example}</div></div></div>}
-  <footer>مكتبة تعليمية مستقلة. راجع أي مخرجات قبل استخدامها في الخدمة.</footer>
- </div>
-}
-createRoot(document.getElementById('root')!).render(<App/>);
+function App(){const[q,setQ]=useState('');const[cat,setCat]=useState('خدمة جامعية');const[selected,setSelected]=useState<Prompt|null>(null);const[favs,setFavs]=useState<string[]>(()=>JSON.parse(localStorage.getItem('khadem-favs')||'[]'));const list=useMemo(()=>ALL_PROMPTS.filter(p=>(cat==='الكل'||p.category===cat)&&`${p.title} ${p.summary} ${p.category} ${p.audience} ${p.template}`.toLowerCase().includes(q.toLowerCase())),[q,cat]);const toggle=(id:string)=>{const n=favs.includes(id)?favs.filter(x=>x!==id):[...favs,id];setFavs(n);localStorage.setItem('khadem-favs',JSON.stringify(n))};return <div className="app"><header><div className="brand"><div className="brand-mark"><Sparkles size={20}/></div><div><div className="brand-name">خادم AI</div><div className="sub">أدوات ذكية تساعدك في الخدمة</div></div></div></header><main><section className="hero"><span className="pill"><Sparkles size={14}/> خدمة جامعية</span><h1>خلي الـAI يساعدك<br/><span>في خدمتك</span></h1><p>مكتبة جاهزة من البرومبتات للخدمة. اختار، عدّل، وانسخ. المحتوى محفوظ داخل الموقع ولا يحتاج بحثًا خارجيًا.</p><div className="search"><Search size={20}/><input value={q} onChange={e=>setQ(e.target.value)} placeholder="دور على برومبت..."/></div></section><nav>{cats.map(c=><button className={cat===c?'active':''} onClick={()=>setCat(c)} key={c}>{c}</button>)}</nav><div className="count">{list.length} برومبت متاح</div><section className="grid">{list.map(p=><article className="card" key={p.id}><div className="top"><span className="tag">{p.category}</span><button aria-label="مفضلة" className="icon" onClick={()=>toggle(p.id)}><Heart size={19} fill={favs.includes(p.id)?'currentColor':'none'}/></button></div><h2>{p.title}</h2><p>{p.summary}</p><div className="meta">{p.audience}</div><button className="open" onClick={()=>setSelected(p)}>استخدم البرومبت <ChevronLeft size={18}/></button></article>)}</section>{list.length===0&&<div className="empty">مفيش برومبت مطابق لبحثك. جرّب كلمة مختلفة أو اختار تصنيف آخر.</div>}</main>{selected&&<div className="overlay" role="dialog" aria-modal="true" onClick={()=>setSelected(null)}><div className="modal" onClick={e=>e.stopPropagation()}><button className="close" aria-label="إغلاق" onClick={()=>setSelected(null)}><X size={22}/></button><span className="tag">{selected.category}</span><h2>{selected.title}</h2><p className="help">{selected.whenToUse}</p><pre>{selected.template}</pre><button className="primary" onClick={()=>navigator.clipboard.writeText(selected.template)}><Copy size={18}/> نسخ البرومبت</button><div className="example"><b>مثال:</b> {selected.example}</div></div></div>}<footer>مكتبة تعليمية مستقلة. راجع أي مخرجات قبل استخدامها في الخدمة.</footer></div>}createRoot(document.getElementById('root')!).render(<App/>);
